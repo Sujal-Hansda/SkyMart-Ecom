@@ -15,7 +15,9 @@ const App = () => {
       <Navbar />
       <AppRoute />
       
-        {cartOpen && <Cart />}
+        {
+          cartOpen?<Cart/>:null
+        }
       
      
       <Footer/>

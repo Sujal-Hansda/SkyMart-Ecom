@@ -7,7 +7,7 @@ export const ContextProvider= ({children})=>
   
   const [productsData, setProductsData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [cartOpen, setCartOpen] = useState(true)
+  const [cartOpen, setCartOpen] = useState(false);
 
   console.log(cartItems);
   

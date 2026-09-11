@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import { useState } from 'react';
 import { MyStore } from '../Context/MyContext';
 
-const ProductDetailCard = () => {
+const ProductDetailCard = () => {  
   const [singleProductData, setSingleProductData] = useState({});
   let { cartItems,setCartItems,setCartOpen } = useContext(MyStore);
   let {id} = useParams();
@@ -23,6 +23,25 @@ useEffect(()=>
 {
   getSingleProdutData();
 },[])
+
+const existingProduct = cartItems.find((item)=>item.id===singleProductData.id); 
+  const addToCart = ()=>
+  {
+    if (existingProduct)
+    {
+      setCartItems([...cartItems.map((item)=>
+      item.id === singleProductData.id?{
+        ...item,
+        quantity:item.quantity+1
+      }:item)])
+    }
+    else
+    {
+      setCartItems([...cartItems,{...singleProductData,quantity:1}])
+    }
+    setCartOpen(true);
+  }
+  
   
   
  return (
@@ -81,10 +100,7 @@ useEffect(()=>
 
         <div className='w-full flex items-center justify-between'>
                   {/* Button */}                
-          <div onClick={()=>{
-            setCartItems([...cartItems,singleProductData]);
-            setCartOpen(true);
-          }} className="flex items-center justify-center gap-2 cursor-pointer w-110 rounded-xl bg- px-6 py-3 font-semibold bg-[#D7F205] text-black transition hover:bg-gray-200">
+          <div onClick={addToCart} className="flex items-center justify-center gap-2 cursor-pointer w-110 rounded-xl bg- px-6 py-3 font-semibold bg-[#D7F205] text-black transition hover:bg-gray-200">
           <ShoppingCart size={20}/>
           <p>Add to Cart</p>          
           </div>

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Zap,ShoppingCart,LogOut } from 'lucide-react'
-import { NavLink } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
+import { MyStore } from '../Context/MyContext'
 
 const Navbar = () => {
+
+  let { setCartOpen } = useContext(MyStore);
+
   return (
     <div className='px-45 py-3 flex justify-between items-center'>
       <div className='cursor-pointer flex items-center justify-between gap-2'>
@@ -21,10 +25,10 @@ const Navbar = () => {
           <p className='text-black rounded-xl px-2.5 font-semibold py-0.5 bg-[#D7F205]'>S</p>
           <h1 className='text-white text-sm font-semibold' >Sujal Hansda</h1>
         </div>
-        <div className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
+        <div onClick={()=>setCartOpen(true)} className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
           <button><ShoppingCart className='cursor-pointer' size={20} /></button>
         </div>
-        <div className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
+        <div  className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
           <button><LogOut className='cursor-pointer' size={20}/></button>
         </div>
       </div>

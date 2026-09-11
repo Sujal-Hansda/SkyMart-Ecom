@@ -3,15 +3,34 @@ import React, { useContext } from 'react'
 import { MyStore } from '../Context/MyContext'
 
 const Cart = () => {
-  let {cartItems,setCartOpen} = useContext(MyStore);
-
+  let {setCartItems,cartItems,setCartOpen} = useContext(MyStore);
+  let increaseQuantity = (id)=>
+  {
+    setCartItems(cartItems.map((item)=>
+    item.id === id?{...item,quantity:item.quantity+1}:item
+    ))
+  }
+  let decreaseQuantity = (id)=>
+  {
+    setCartItems(cartItems.map((item)=>
+    item.id === id?{...item,quantity:item.quantity-1}:item
+    ))
+  }
+  let deleteProduct = (id)=>
+  {
+    setCartItems(cartItems.filter((item)=>item.id!==id))
+  }
+  const total = cartItems.reduce((sum,item)=>
+  {
+    return sum + item.price*item.quantity
+  },0)
   return (
     <div className='z-50 top-0 right-0 fixed border-l w-140 h-screen bg-black'>
       <div className='p-8 flex items-center justify-between'>
               <div className='flex items-center gap-3'>
         <ShoppingBag/>
         <p>Cart</p>
-        <p className='text-[#D7F205] rounded-lg p-1 bg-[#d6f20534]'>3 items</p>
+        <p className='text-[#D7F205] rounded-lg p-1 bg-[#d6f20534]'>{cartItems.length} items</p>
       </div>
       <p onClick={()=>
         {
@@ -30,15 +49,15 @@ const Cart = () => {
           </div>
           <div>
             <p>{item.title}</p>
-            <p className='text-[#D7F205] text-lg'>${item.price}</p>
-            <p className='text-gray-400 text-sm'>$119.99 each</p>
+            <p className='text-[#D7F205] text-lg'>${(item.price*item.quantity).toFixed(2)}</p>
+            <p className='text-gray-400 text-sm'>${item.price}each</p>
             <div className='w-full flex items-center justify-between'>
-              <div className='flex items-center justify-between w-full gap-4'>
-              <p className='cursor-pointer border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>-</p>
-              <p className='border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>2</p>
-              <p className='cursor-pointer border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>+</p>
+              <div className='flex items-center gap-4 w-full'>
+              <p onClick={()=>decreaseQuantity(item.id)} className='cursor-pointer border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>-</p>
+              <p className='border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>{item.quantity}</p>
+              <p  onClick={()=>increaseQuantity(item.id)} className='cursor-pointer border w-4 h-4 flex items-center justify-center border-gray-400 p-3 rounded-md'>+</p>
               </div>
-              <div className='cursor-pointer absolute right-10'>
+              <div onClick={()=>deleteProduct(item.id)} className='cursor-pointer absolute right-10'>
                 <Trash  size={20}/>
               </div>
               
@@ -53,7 +72,7 @@ const Cart = () => {
         <div className='p-6 '>
           <div className='flex items-center justify-between'>
             <p className='text-lg text-gray-400'>Total</p>
-            <p className='text-2xl'>$498.36</p>
+            <p className='text-2xl'>${(total).toFixed(2)}</p>
           </div>
         <div className='cursor-pointer mt-2 bg-[#D7F205] text-black font-semibold rounded-2xl py-3 flex items-center justify-center'>
           <p>Checkout</p>
