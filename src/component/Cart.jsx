@@ -24,6 +24,15 @@ const Cart = () => {
   {
     return sum + item.price*item.quantity
   },0)
+  const checkout = ()=>
+  {
+    setCartItems([]);
+    alert("Order placed successfully!!!🎊");
+  }
+  const clearCart = ()=>
+  {
+    setCartItems([]);
+  }
   return (
     <div className='z-50 top-0 right-0 fixed border-l w-140 h-screen bg-black'>
       <div className='p-8 flex items-center justify-between'>
@@ -74,11 +83,11 @@ const Cart = () => {
             <p className='text-lg text-gray-400'>Total</p>
             <p className='text-2xl'>${(total).toFixed(2)}</p>
           </div>
-        <div className='cursor-pointer mt-2 bg-[#D7F205] text-black font-semibold rounded-2xl py-3 flex items-center justify-center'>
+        <div onClick={checkout} className='cursor-pointer mt-2 bg-[#D7F205] text-black font-semibold rounded-2xl py-3 flex items-center justify-center'>
           <p>Checkout</p>
           <ArrowRight size={20}/>
         </div>
-        <p className='cursor-pointer mt-2 text-center text-gray-400'>Clear cart</p>
+        <p onClick={clearCart} className='cursor-pointer mt-2 text-center text-gray-400'>Clear cart</p>
       </div>
       </div>
         
