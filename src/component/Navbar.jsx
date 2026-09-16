@@ -16,9 +16,21 @@ const Navbar = () => {
         <h1 className='text-xl font-bold'>Sky<span className='text-[#D7F205]'>Mart</span></h1>
       </div>
       <div className='font-semibold flex gap-10'>
-      <NavLink className="cursor-pointer text-sm text-[#D7F205]" to="/">Home</NavLink>
-      <NavLink className='cursor-pointer text-gray-400 text-sm' to="/shop">Shop</NavLink>
-      <NavLink className='cursor-pointer text-gray-400 text-sm' to="/about">About</NavLink>
+      <NavLink
+       className={({isActive})=> isActive?"cursor-pointer text-sm text-[#D7F205]":"cursor-pointer text-gray-400 text-sm"} 
+       to="/"
+       end
+       >Home</NavLink>
+      <NavLink 
+       className={({isActive})=> isActive?"cursor-pointer text-sm text-[#D7F205]":"cursor-pointer text-gray-400 text-sm"} 
+      to="/shop"
+      
+      >Shop</NavLink>
+      <NavLink 
+       className={({isActive})=> isActive?"cursor-pointer text-sm text-[#D7F205]":"cursor-pointer text-gray-400 text-sm"} 
+      to="/about"
+      
+      >About</NavLink>
       </div>
       <div className='flex items-center justify-between gap-3'>
         <div className='bg-[#1C1C1C] gap-2 border border-[#403E3E] p-2 rounded-lg flex items-center justify-between  '>

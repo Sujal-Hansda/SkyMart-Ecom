@@ -1,10 +1,17 @@
 import { Zap, ArrowRight, Package, ShoppingBag, Star, Tag, TrendingUp, Shield } from 'lucide-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
+import { MyStore } from '../Context/MyContext'
 
 const Home = () => {
 
-    let navigate = useNavigate();
+  let {cartItems,total,productsData} = useContext(MyStore);
+  console.log(productsData);
+  
+  const topPicks = productsData.slice(0,5)
+  const newArrivals = productsData.slice(5,10)
+  
+  let navigate = useNavigate();
 
   return (
     <div className='flex flex-col gap-10 px-40 py-10'>
@@ -42,7 +49,7 @@ const Home = () => {
             <Package color='#D7F205'/>
           </div>
           <div>
-            <p className='font-semibold text-3xl'>6</p>
+            <p className='font-semibold text-3xl'>{cartItems.length}</p>
             <p className='text-gray-300'>Cart Items</p>
             <p className='text-sm text-gray-400 '>In your bag</p>
           </div>
@@ -52,7 +59,7 @@ const Home = () => {
             <TrendingUp color='#4A7FC0'/>
           </div>
           <div>
-            <p className='font-semibold text-3xl'>$489.94</p>
+            <p className='font-semibold text-3xl'>${total}</p>
             <p className='text-gray-300'>Cart Value</p>
             <p className='text-sm text-gray-400 '>Ready to checkout</p>
           </div>
@@ -88,25 +95,36 @@ const Home = () => {
           </div>
         </div>
         <div className='grid grid-cols-4 grid-rows-2 gap-4'>
-          <div className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
+          <div onClick={()=>navigate("/shop?category=electronics")} className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
             <p>💻</p>
             <p>Electronics</p>
-            <p className='text-gray-500'>17 items</p>
+            <p className='text-gray-500'>
+              {
+              productsData.filter((product)=>product.category==="electronics").length
+              } items</p>
           </div>
-          <div className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
+          <div onClick={()=>navigate("/shop?category=men's clothing")} className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
             <p>👔</p>
-            <p>Clothing</p>
-            <p className='text-gray-500'>2 items</p>
+            <p>Men's Clothing</p>
+            <p className='text-gray-500'>
+              {
+              productsData.filter((product)=>product.category==="men's clothing").length
+              } items</p>
           </div>
-          <div className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
-            <p>🛏️</p>
-            <p>Furniture</p>
-            <p className='text-gray-500'>3 items</p>
+          <div onClick={()=>navigate("/shop?category=women's clothing")} className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
+            <p>🚺</p>
+            <p>Women's Clothing</p>
+            <p className='text-gray-500'>
+              {
+              productsData.filter((product)=>product.category==="women's clothing").length
+              } items</p>
           </div>
-          <div className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
-            <p>🏡</p>
-            <p>Home</p>
-            <p className='text-gray-500'>16 items</p>
+          <div onClick={()=>navigate("/shop?category=jewelery")} className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
+            <p>💍</p>
+            <p>Jewelery</p>
+            <p className='text-gray-500'>{
+              productsData.filter((product)=>product.category==="jewelery").length
+              } items</p>
           </div>
           <div className='cursor-pointer flex flex-col items-center justify-center bg-white text-black rounded-2xl h-30'>
             <p>🏐</p>
@@ -121,74 +139,39 @@ const Home = () => {
         </div>
       </div>
       {/*Quick Links*/}
-        <div className='flex items-center justify-between gap-10'>
+        <div className='flex items-center justify-between gap-10'> 
           <div className='w-[50%] rounded-2xl bg-white text-[#D7F205] p-4'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
                 <Star fill='#B0861C' color='#B0861C'/>
                 <p className='text-black font-semibold'>Top Rated</p>
               </div>
-              <div className='flex items-center justify-between gap-1'>
+              <div onClick={()=>navigate("/shop")} className='flex items-center justify-between gap-1'>
                 <p>See all</p>
                 <ArrowRight size={15}/>
               </div>
             </div>
-            <div className='w-full pt-4 flex flex-col gap-2'>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
+            <div  className='w-full pt-4 flex flex-col gap-2'>
+              {
+                topPicks.map((val)=>
+                {
+                  return (
+              <div key={val.id} onClick={()=>navigate(`/detail/${val.id}`)} className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
                 <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="" />
+                  <div className='h-12 w-12 p-2'>
+                    <img className='object-cover' src={val.image} alt={val.title} />
                   </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
+                  <p className='font-semibold text-lg'>${val.price}</p>
                 </div>
                 <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
                   <ShoppingBag size={20}/>
                 </div>
               </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-10'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1560343090-f0409e92791a" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
+                  )
+                })
+              }
+
+
             </div>
           </div>
           <div className='w-[50%] rounded-2xl bg-white text-[#D7F205] p-4'>
@@ -197,67 +180,32 @@ const Home = () => {
                 <Zap fill='#D7F205' color='#D7F205'/>
                 <p className='text-black font-semibold'>New Arrivals</p>
               </div>
-              <div className='flex items-center justify-between gap-1'>
+              <div  onClick={()=>navigate('/shop')} className='cursor-pointer flex items-center justify-between gap-1'>
                 <p>See all</p>
                 <ArrowRight size={15}/>
               </div>
             </div>
             <div className='w-full pt-4 flex flex-col gap-2'>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="" />
+              {
+                newArrivals.map((item)=>
+                {
+                  return (
+              <div key={item.id} onClick={()=>navigate(`/detail/${item.id}`)} className=' cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
+                <div className=' flex items-center gap-4'>
+                  <div className='p-1 h-12 w-12'>
+                    <img className='object-cover' src={item.image} alt={item.title} />
                   </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
+                  <p className='font-semibold text-lg'>${item.price}</p>
                 </div>
                 <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
                   <ShoppingBag size={20}/>
                 </div>
               </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-12'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
-              <div className='cursor-pointer border border-gray-300 rounded-xl flex items-center justify-between p-3 '>
-                <div className='flex items-center gap-4'>
-                  <div className='h-12 w-10'>
-                    <img className='object-cover' src="https://images.unsplash.com/photo-1560343090-f0409e92791a" alt="" />
-                  </div>
-                  <p className='font-semibold text-lg'>$599.99</p>
-                </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
-                  <ShoppingBag size={20}/>
-                </div>
-              </div>
+                  )
+                })
+              }
+
+
             </div>
           </div>
           

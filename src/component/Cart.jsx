@@ -2,7 +2,11 @@ import { ArrowBigLeft, ArrowRight, ShoppingBag, Trash } from 'lucide-react'
 import React, { useContext } from 'react'
 import { MyStore } from '../Context/MyContext'
 
+
 const Cart = () => {
+  
+  let {total} = useContext(MyStore);
+
   let {setCartItems,cartItems,setCartOpen} = useContext(MyStore);
   let increaseQuantity = (id)=>
   {
@@ -20,14 +24,11 @@ const Cart = () => {
   {
     setCartItems(cartItems.filter((item)=>item.id!==id))
   }
-  const total = cartItems.reduce((sum,item)=>
-  {
-    return sum + item.price*item.quantity
-  },0)
+
   const checkout = ()=>
   {
     setCartItems([]);
-    alert("Order placed successfully!!!🎊");
+    toast.success("Order placed successfully!!!🎊");
   }
   const clearCart = ()=>
   {
@@ -52,7 +53,7 @@ const Cart = () => {
         {
           cartItems.map((item,index)=>
           (
-                <div key={index} className='p-6 mb-1 flex gap-2 border rounded-xl'>
+                <div key={item.id} className='p-6 mb-1 flex gap-2 border rounded-xl'>
           <div className='h-15 w-15 '>
             <img className='object-cover rounded-lg' src={item.image} alt="" />
           </div>

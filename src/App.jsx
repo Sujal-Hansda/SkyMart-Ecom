@@ -4,6 +4,7 @@ import Footer from './component/Footer'
 import AppRoute from './Routes/AppRoute'
 import Cart from './component/Cart'
 import { MyStore } from './Context/MyContext'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const App = () => {
