@@ -5,7 +5,7 @@ import AppRoute from './Routes/AppRoute'
 import Cart from './component/Cart'
 import { MyStore } from './Context/MyContext'
 import { ToastContainer, toast } from 'react-toastify';
-import LoginPage from './pages/loginPage'
+import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 
 
