@@ -5,7 +5,7 @@ import Shop from '../pages/Shop'
 import About from '../pages/About'
 import MainLayout from '../Layout/MainLayout'
 import AuthLayout from '../Layout/AuthLayout'
-import LoginPage from '../pages/loginPage'
+import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
 import ProtectedRoute from './ProtectedRoute'
 import ProductDetailCard from "../component/ProductDetailCard"
