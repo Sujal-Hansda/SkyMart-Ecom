@@ -4,12 +4,18 @@ import { NavLink, useNavigate } from 'react-router'
 import { MyStore } from '../Context/MyContext'
 
 const Navbar = () => {
-
-  let { setCartOpen } = useContext(MyStore);
+  let navigate = useNavigate();
+  let { loggedInUsers,setLoggedInUsers,setCartOpen } = useContext(MyStore);
+  const logout = ()=>
+  {
+    localStorage.removeItem("loggedInUsers");
+    setLoggedInUsers(null);
+    navigate("/");
+  }
 
   return (
     <div className='px-45 py-3 flex justify-between items-center'>
-      <div className='cursor-pointer flex items-center justify-between gap-2'>
+      <div onClick={()=>navigate("/main")} className='cursor-pointer flex items-center justify-between gap-2'>
         <div className='bg-[#D7F205] p-1 rounded-lg'>
           <Zap fill='black' color='black' size={20}/>
         </div>
@@ -18,7 +24,7 @@ const Navbar = () => {
       <div className='font-semibold flex gap-10'>
       <NavLink
        className={({isActive})=> isActive?"cursor-pointer text-sm text-[#D7F205]":"cursor-pointer text-gray-400 text-sm"} 
-       to="/"
+       to="/main"
        end
        >Home</NavLink>
       <NavLink 
@@ -34,14 +40,14 @@ const Navbar = () => {
       </div>
       <div className='flex items-center justify-between gap-3'>
         <div className='bg-[#1C1C1C] gap-2 border border-[#403E3E] p-2 rounded-lg flex items-center justify-between  '>
-          <p className='text-black rounded-xl px-2.5 font-semibold py-0.5 bg-[#D7F205]'>S</p>
-          <h1 className='text-white text-sm font-semibold' >Sujal Hansda</h1>
+          <p className='text-black rounded-xl px-2.5 font-semibold py-0.5 bg-[#D7F205]'>{loggedInUsers.name?.charAt(0).toUpperCase()}</p>
+          <h1 className='text-white text-sm font-semibold' >{loggedInUsers.name}</h1>
         </div>
         <div onClick={()=>setCartOpen(true)} className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
           <button><ShoppingCart className='cursor-pointer' size={20} /></button>
         </div>
         <div  className=' flex py-2 rounded-lg px-2 border border-[#403E3E]'>
-          <button><LogOut className='cursor-pointer' size={20}/></button>
+          <button><LogOut onClick={logout} className='cursor-pointer' size={20}/></button>
         </div>
       </div>
     </div>

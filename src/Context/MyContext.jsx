@@ -11,6 +11,14 @@ export const ContextProvider= ({children})=>
   const [productsData, setProductsData] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [registeredUsers, setRegisteredUsers] = useState(JSON.parse(localStorage.getItem('registeredUsers')) || [] )
+  const [loggedInUsers, setLoggedInUsers] = useState(JSON.parse(localStorage.getItem("loggedInUsers")));
+
+  console.log("registered_User",registeredUsers);
+  console.log("LoggedIn User",loggedInUsers);
+  
+
+
   const total = cartItems.reduce((sum,item)=>
   {
     return sum + item.price*item.quantity
@@ -29,13 +37,14 @@ export const ContextProvider= ({children})=>
   {
     getProductsData();
   },[])
-  
+
+
 
   console.log(cartItems);
   
   
-  console.log(productsData);
-  return (<MyStore.Provider value={{getProductsData,total,cartOpen,cartItems,setCartOpen,setCartItems,productsData,setProductsData}}>
+  // console.log(productsData);
+  return (<MyStore.Provider value={{registeredUsers,setRegisteredUsers,loggedInUsers,setLoggedInUsers,getProductsData,total,cartOpen,cartItems,setCartOpen,setCartItems,productsData,setProductsData}}>
     {children}
   </MyStore.Provider>
   ) 

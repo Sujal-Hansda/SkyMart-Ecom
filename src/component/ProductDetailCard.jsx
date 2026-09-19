@@ -1,14 +1,37 @@
 import axios from 'axios';
-import { Heart, Truck, Star, Shield,RotateCcw, ArrowRight, ChevronRight, ShoppingCart } from 'lucide-react';
+import { Heart, Truck, Star, Shield,RotateCcw, ArrowRight, ChevronRight, ShoppingCart, Check } from 'lucide-react';
 import React, { useContext, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useState } from 'react';
 import { MyStore } from '../Context/MyContext';
 
 const ProductDetailCard = () => {  
   const [singleProductData, setSingleProductData] = useState({});
-  let { cartItems,setCartItems,setCartOpen } = useContext(MyStore);
+  let {productsData,cartItems,setCartItems,setCartOpen } = useContext(MyStore);
   let {id} = useParams();
+  let addRelatedProduct = ()=>
+  {
+      const existingProduct = cartItems.find(
+    (item) => item.id === singleProductData.id
+  );
+
+  if (existingProduct) {
+    setCartItems([
+      ...cartItems.map((item) =>
+        item.id === singleProductData.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    ]);
+  } else {
+    setCartItems([
+      ...cartItems,
+      { ...singleProductData, quantity: 1 }
+    ]);
+  }
+
+  setCartOpen(true);
+  }
   let getSingleProdutData  = async()=>
 {
     try {
@@ -22,7 +45,16 @@ const ProductDetailCard = () => {
 useEffect(()=>
 {
   getSingleProdutData();
-},[])
+},[id])
+
+let navigate = useNavigate();
+const relatedProducts = productsData.filter((product)=>
+{
+  return(
+    product.category === singleProductData.category &&
+    product.id!== singleProductData.id
+  )
+}).slice(0,4);
 
 const existingProduct = cartItems.find((item)=>item.id===singleProductData.id); 
   const addToCart = ()=>
@@ -133,8 +165,69 @@ const existingProduct = cartItems.find((item)=>item.id===singleProductData.id);
         </div>
       </div>
     </div>
-    <p className='px-40 py-10 font-semibold text-2xl'>Related Products</p>
+<p className='px-40 py-10 font-semibold text-2xl'>
+  Related Products
+</p>
+
+<div className='w-full px-40 flex gap-2 items-center'>
+  {
+    relatedProducts.map((product)=>
+    (
+      <div key={product.id} className='border border-gray-400 bg-black h-85 w-60 rounded-2xl overflow-hidden'>
+    {/* Product Image */}
+    <div onClick={()=>navigate(`/detail/${product.id}`)} className='bg-white h-44 flex items-center justify-center'>
+      <img
+        className='cursor-pointer p-5 w-full h-full object-contain'
+        src={product.image}
+        alt="Product"
+      />
+    </div>
+
+    {/* Product Information */}
+    <div className='bg-black text-white px-4 py-2'>
+
+      <p className='text-xs text-gray-400'>
+        {product.category}
+      </p>
+
+      <p className='font-medium line-clamp-2'>
+        {product.title}
+      </p>
+
+      {/* Rating */}
+      <div className='flex items-center gap-1 mt-1'>
+        <Star
+          size={17}
+          fill='currentColor'
+          className='text-yellow-400'
+        />
+        <p>({product.rating.count})</p>
       </div>
+
+      {/* Divider */}
+      <div className='w-full h-px bg-gray-700 my-2'></div>
+
+      {/* Price + Add Button */}
+      <div className='flex items-center justify-between'>
+        <p className='text-lg font-semibold text-[#D7F205]'>
+          ${product.price}
+        </p>
+
+        <div onClick={addRelatedProduct} className='cursor-pointer text-black rounded-2xl py-1 px-2 bg-[#D7F205] flex gap-1 items-center'>
+          <ShoppingCart size={15} />
+          <p>Add</p>
+        </div>
+      </div>
+
+      </div>
+
+      </div>
+    ))
+  }
+  
+</div>
+
+    </div>
 
   );
 }

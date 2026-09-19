@@ -1,11 +1,11 @@
 import { Zap, ArrowRight, Package, ShoppingBag, Star, Tag, TrendingUp, Shield } from 'lucide-react'
 import React, { useContext } from 'react'
-import { useNavigate } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
 import { MyStore } from '../Context/MyContext'
 
 const Home = () => {
 
-  let {cartItems,total,productsData} = useContext(MyStore);
+  let {loggedInUsers,cartItems,total,productsData} = useContext(MyStore);
   console.log(productsData);
   
   const topPicks = productsData.slice(0,5)
@@ -19,7 +19,7 @@ const Home = () => {
       <div className='flex flex-col border p-10 rounded-3xl'>
         <h5 className='pb-2 text-[#D7F205]'>GOOD AFTERNOON 👋</h5>
         <div className='flex justify-between items-center'>
-          <h1 className='text-6xl font-semibold'>Welcome back,<br /><span className='text-[#D7F205]'>Sujal!</span></h1>
+          <h1 className='text-6xl font-semibold'>Welcome back,<br /><span className='text-[#D7F205]'>{loggedInUsers.name}!</span></h1>
           <div className=' rounded-2xl bg-[#d6f20526] border border-[#d6f20576] flex flex-col items-center justify-center h-20 w-35'>
             <p className='text-[#D7F205] text-4xl font-semibold'>20+</p>
             <p className='text-sm text-gray-400'>Products Available</p>
@@ -163,7 +163,7 @@ const Home = () => {
                   </div>
                   <p className='font-semibold text-lg'>${val.price}</p>
                 </div>
-                <div className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
+                <div  className='flex items-center justify-center h-10 w-10 rounded-xl bg-[#d6f2055a]'>
                   <ShoppingBag size={20}/>
                 </div>
               </div>

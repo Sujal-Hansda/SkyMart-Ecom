@@ -1,7 +1,7 @@
 import { ArrowBigLeft, ArrowRight, ShoppingBag, Trash } from 'lucide-react'
 import React, { useContext } from 'react'
 import { MyStore } from '../Context/MyContext'
-
+import { toast } from 'react-toastify';
 
 const Cart = () => {
   
@@ -18,7 +18,8 @@ const Cart = () => {
   {
     setCartItems(cartItems.map((item)=>
     item.id === id?{...item,quantity:item.quantity-1}:item
-    ))
+    ).filter((item)=>item.quantity>0)
+  )
   }
   let deleteProduct = (id)=>
   {

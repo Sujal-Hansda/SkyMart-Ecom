@@ -5,6 +5,8 @@ import AppRoute from './Routes/AppRoute'
 import Cart from './component/Cart'
 import { MyStore } from './Context/MyContext'
 import { ToastContainer, toast } from 'react-toastify';
+import LoginPage from './pages/loginPage'
+import RegisterPage from './pages/RegisterPage'
 
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
       
      
       <Footer/>
+      <LoginPage />
+      <RegisterPage />
     </div>
   )
 }

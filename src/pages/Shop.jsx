@@ -9,8 +9,8 @@ import { useState } from 'react';
 const Shop = () => {
 
   const [search, setSearch] = useState("")
-
-  let { productsData,setProductsData,getProductsData } = useContext(MyStore);
+  const  [sort, setSort] = useState("");
+  let { productsData } = useContext(MyStore);
   let [searchParams, setSearchParams] = useSearchParams();
   const category =  searchParams.get("category");
 const filteredProducts = productsData.filter((product)=>
@@ -21,6 +21,22 @@ const searchProducts = filteredProducts.filter((product)=>
 {
   return product.title.toLowerCase().includes(search.toLowerCase());
 })
+if (sort ==="high-low")
+{
+  searchProducts.sort((a,b)=>b.price-a.price);
+}
+if (sort ==="low-high")
+{
+  searchProducts.sort((a,b)=>a.price-b.price);
+}
+if (sort === "top-rated")
+{
+  searchProducts.sort((a,b)=>b.rating.rate - a.rating.rate)
+}
+if (sort === "lowest-rated")
+{
+  searchProducts.sort((a,b)=>a.rating.rate - b.rating.rate)
+}
 
   
   return (
@@ -36,21 +52,32 @@ const searchProducts = filteredProducts.filter((product)=>
           placeholder='Search products...'/>
         </div>
         <div className=' flex items-center gap-2'>
-                  <select   name="" id="" className='bg-black border border-gray-700 rounded-2xl py-2 px-4  outline-none   text-white'>
+                  <select  value={category||""} onChange={(e)=>
+                    {
+                      if (e.target.value)
+                      {
+                        setSearchParams({category:e.target.value})
+                      }
+                      else
+                      {
+                        setSearchParams({});
+                      }
+                    }
+                  }  name="" id="" className='bg-black border border-gray-700 rounded-2xl py-2 px-4  outline-none   text-white'>
           <option  value="">All Categories</option>
-          <option  value="">Electronics</option>
-          <option  value="">Clothing</option>
-          <option  value="">Furniture</option>
-          <option  value="">Home</option>
-          <option  value="">Sports</option>
-          <option  value="">Accessiories</option>
+          <option  value="electronics">Electronics</option>
+          <option  value="men's clothing">Men's Clothing</option>
+          <option  value="women's clothing">Women's Clothing</option>
+          <option  value="jewelery">Jewelery</option>
+          <option  value="sports">Sports</option>
+          <option  value="accessiories">Accessiories</option>
         </select>
-        <select   name="" id="" className='bg-black border border-gray-700 rounded-2xl py-2 px-4  outline-none  text-white'>
+        <select  onChange={(e)=>setSort(e.target.value)}  name="" id="" className='bg-black border border-gray-700 rounded-2xl py-2 px-4  outline-none  text-white'>
           <option  value="">Featured</option>
-          <option  value="">Price:High-Low</option>
-          <option  value="">Price:Low-High</option>
-          <option  value="">Top Rated</option>
-          <option  value="">Lowest Rated</option>
+          <option  value="high-low">Price:High-Low</option>
+          <option  value="low-high">Price:Low-High</option>
+          <option  value="top-rated">Top Rated</option>
+          <option  value="lowest-rated">Lowest Rated</option>
         </select>
         </div>
       </div>
