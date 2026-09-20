@@ -26,7 +26,7 @@ const RegisterPage = () => {
       setLoggedInUsers(data);
       localStorage.setItem('loggedInUsers',JSON.stringify(data));
       localStorage.setItem('registeredUsers',JSON.stringify(arr));
-      navigate("/login");
+      navigate("/");
       reset();
       console.log("reset called");
       
@@ -88,7 +88,7 @@ const RegisterPage = () => {
             <ArrowRight size={20}/>
           </button>
           </form>
-          <p className='text-center pt-2'>Already have an account? <span onClick={()=>{navigate("/login")}} className='font-semibold text-[#D7F205] cursor-pointer'>Sign in</span></p>
+          <p className='text-center pt-2'>Already have an account? <span onClick={()=>{navigate("/")}} className='font-semibold text-[#D7F205] cursor-pointer'>Sign in</span></p>
       </div>
     </div>
   )

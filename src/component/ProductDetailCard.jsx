@@ -7,6 +7,7 @@ import { MyStore } from '../Context/MyContext';
 
 const ProductDetailCard = () => {  
   const [singleProductData, setSingleProductData] = useState({});
+  const [whishlist, setWhishlist] = useState(false);
   let {productsData,cartItems,setCartItems,setCartOpen } = useContext(MyStore);
   let {id} = useParams();
   let addRelatedProduct = ()=>
@@ -46,6 +47,10 @@ useEffect(()=>
 {
   getSingleProdutData();
 },[id])
+const handleNext= ()=>
+{
+    navigate(`/detail/${Number(id) + 1}`);
+}
 
 let navigate = useNavigate();
 const relatedProducts = productsData.filter((product)=>
@@ -138,7 +143,8 @@ const existingProduct = cartItems.find((item)=>item.id===singleProductData.id);
           </div>
                
           <div className='cursor-pointer w-12 h-12 border border-gray-600 rounded-xl flex items-center justify-center'>
-          <Heart />
+          <Heart   onClick={() => setWhishlist(!whishlist)}
+            className={`cursor-pointer ${whishlist ? "text-red-500 fill-red-500" : "text-white"}`}/>
           </div>
         </div>
         <div className='mt-5 flex items-center justify-between gap-4'>
@@ -159,7 +165,7 @@ const existingProduct = cartItems.find((item)=>item.id===singleProductData.id);
           </div>
         </div>
         {/*Next Button*/}
-        <div className='cursor-pointer mt-4 w-full flex items-center justify-center text-black bg-[#D7F205] rounded-4xl py-3'> 
+        <div onClick={handleNext} className='cursor-pointer mt-4 w-full flex items-center justify-center text-black bg-[#D7F205] rounded-4xl py-3'> 
           <p className='font-semibold'>Next</p>
           <ChevronRight/>
         </div>
